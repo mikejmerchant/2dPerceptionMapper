@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>2D Perceptual Mapping Survey</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        canvas { border: 1px solid #000; margin-top: 10px; }
+        #controls { margin-bottom: 10px; }
+        #questionDisplay { font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <h2>2D Perceptual Mapping Survey</h2>
+    <label for="username">Enter your name:</label>
+    <input type="text" id="username" required>
+    <div id="questionDisplay">Click on the canvas to answer: Automating literature searches and proposing search terms</div>
+    <canvas id="surveyCanvas" width="600" height="600"></canvas>
+    <br>
+    <button onclick="completeSurvey()">Complete Survey</button>
+
+    <script>
+        const canvas = document.getElementById('surveyCanvas');
+        const ctx = canvas.getContext('2d');
+        const usernameInput = document.getElementById('username');
+        const questionDisplay = document.getElementById('questionDisplay');
+        const questions = ["Automating literature searches and proposing search terms", "Screening abstracts and full texts for relevance", "Extracting structured data from studies", "Generating code for meta-analyses", "Conducting automated or \u201cliving\u201d literature reviews", "Managing evidence repositories and updates", "Monitoring clinical trial registries", "Monitoring academic sources for new evidence", "Horizon scanning for emerging technologies", "Detecting bias and assessing reproducibility in submitted reviews", "Performing sentiment/discourse analysis on grey literature and stakeholder feedback", "Handling copyright/IP-sensitive filtering and content validation"];
+        const colors = ["red", "blue", "green", "orange", "purple", "cyan", "magenta", "lime", "brown", "teal", "navy", "darkgoldenrod"];
+        let currentQuestionIndex = 0;
+        let responses = [];
+
+        function drawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = "#000";
+            ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+            // Axes
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height / 2);
+            ctx.lineTo(canvas.width, canvas.height / 2);
+            ctx.moveTo(canvas.width / 2, 0);
+            ctx.lineTo(canvas.width / 2, canvas.height);
+            ctx.stroke();
+
+            // Labels
+            ctx.font = "14px Arial";
+            ctx.fillText("Low", 10, canvas.height / 2 - 10);
+            ctx.fillText("High", canvas.width - 40, canvas.height / 2 - 10);
+            ctx.fillText("Low", canvas.width / 2 + 10, canvas.height - 10);
+            ctx.fillText("High", canvas.width / 2 + 10, 20);
+            ctx.fillText("Feasibility in 2–5 years", canvas.width / 2 - 80, canvas.height - 30);
+            ctx.save();
+            ctx.translate(20, canvas.height / 2 + 80);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText("Transformative potential", 0, 0);
+            ctx.restore();
+
+            // Quadrant labels
+            ctx.font = "12px Arial";
+            ctx.fillText("High need, Prototypes available now", canvas.width - 220, 20);
+            ctx.fillText("Low impact, low challenge", canvas.width - 180, canvas.height - 10);
+            ctx.fillText("Low impact, highly challenging", 10, canvas.height - 10);
+            ctx.fillText("High impact, Unfeasible with current technology", 10, 20);
+
+            // Draw previous responses
+            responses.forEach((r, i) => {
+                ctx.beginPath();
+                ctx.arc(r.x, r.y, 6, 0, 2 * Math.PI);
+                ctx.fillStyle = colors[r.index];
+                ctx.fill();
+                ctx.stroke();
+            });
+        }
+
+        canvas.addEventListener('click', function(event) {
+            if (!usernameInput.value) {
+                alert("Please enter your name before starting.");
+                return;
+            }
+            if (currentQuestionIndex >= questions.length) {
+                alert("All questions have been answered.");
+                return;
+            }
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            responses.push({
+                username: usernameInput.value,
+                question: questions[currentQuestionIndex],
+                index: currentQuestionIndex,
+                x: x,
+                y: y,
+                timestamp: new Date().toISOString()
+            });
+            currentQuestionIndex++;
+            if (currentQuestionIndex < questions.length) {
+                questionDisplay.textContent = "Click on the canvas to answer: " + questions[currentQuestionIndex];
+            } else {
+                questionDisplay.textContent = "All questions answered.";
+            }
+            drawCanvas();
+        });
+
+        function completeSurvey() {
+            if (responses.length < questions.length) {
+                alert("Please answer all questions before completing the survey.");
+                return;
+            }
+            let body = "Survey responses for " + usernameInput.value + ":%0D%0A%0D%0A";
+            responses.forEach(r => {
+                body += r.question + ": (" + r.x + ", " + r.y + ")%0D%0A";
+            });
+            window.location.href = "mailto:your.email@example.com?subject=Survey Responses&body=" + body;
+        }
+
+        drawCanvas();
+    </script>
+</body>
+</html>
