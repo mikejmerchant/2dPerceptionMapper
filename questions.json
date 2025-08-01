@@ -1,0 +1,58 @@
+[
+  {
+    "question": "Literature search automation",
+    "explanation": "e.g. generate and refine search strategies, automate database queries to identify relevant studies for HTA"
+  },
+  {
+    "question": "Abstract/full-text screening",
+    "explanation": "e.g. use AI to prioritise or exclude studies based on relevance to HTA criteria, reducing manual workload"
+  },
+  {
+    "question": "Structured data extraction",
+    "explanation": "e.g. extract PICO elements, outcomes, and study characteristics from publications for evidence tables"
+  },
+  {
+    "question": "Meta-analysis code generation",
+    "explanation": "e.g. automatically generate statistical code for meta-analyses based on extracted data and model type"
+  },
+  {
+    "question": "Living literature reviews",
+    "explanation": "e.g. continuously monitor and update systematic reviews with new evidence as it becomes available"
+  },
+  {
+    "question": "Evidence repository management",
+    "explanation": "e.g. monitor clinical trial registries and academic sources to maintain up-to-date evidence libraries"
+  },
+  {
+    "question": "Horizon scanning",
+    "explanation": "e.g. identify emerging technologies or innovations likely to enter the HTA pipeline"
+  },
+  {
+    "question": "Automated critical appraisal of study quality",
+    "explanation": "e.g. assess risk of bias or study quality using AI trained on appraisal frameworks like GRADE or ROBINS-I"
+  },
+  {
+    "question": "Bias/reproducibility detection",
+    "explanation": "e.g. detect methodological flaws, selective reporting, or inconsistencies in submitted evidence"
+  },
+  {
+    "question": "Evidence gap mapping",
+    "explanation": "e.g. identify under-researched populations, outcomes, or interventions relevant to HTA priorities"
+  },
+  {
+    "question": "Sentiment/discourse analysis",
+    "explanation": "e.g. analyse stakeholder submissions or grey literature to understand perspectives and value framing"
+  },
+  {
+    "question": "Copyright/IP filtering",
+    "explanation": "e.g. detect and manage use of copyrighted or proprietary content in HTA submissions and outputs"
+  },
+  {
+    "question": "Translation of non-English studies",
+    "explanation": "e.g. use AI to translate and screen non-English publications to reduce language bias in reviews"
+  },
+  {
+    "question": "Retraction/fraud detection",
+    "explanation": "e.g. identify retracted or fraudulent studies using AI linked to retraction databases and anomaly detection"
+  }
+]
