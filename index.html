@@ -128,8 +128,8 @@ fetch('questions.json')
 
     // Example: display the first question and explanation
     if (questions.length > 0) {
-      const questionText = document.getElementById("questionText");
-      const explanationText = document.getElementById("questionExplanation");
+      const questionText = document.getElementById("question");
+      const explanationText = document.getElementById("explanation");
       if (questionText) questionText.innerText = questions[0];
       if (explanationText) explanationText.innerText = explanations[0];
     }
