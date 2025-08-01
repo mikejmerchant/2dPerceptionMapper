@@ -13,7 +13,7 @@
     <h2>2D Perceptual Mapping Survey</h2>
     <label for="username">Enter your name:</label>
     <input type="text" id="username" required>
-    <div id="questionDisplay">Click on the canvas to answer: Automating literature searches and proposing search terms</div>
+    <div id="questionDisplay">Click on the canvas to answer: </div>
     <canvas id="surveyCanvas" width="600" height="600"></canvas>
     <br>
     <button onclick="completeSurvey()">Complete Survey</button>
@@ -22,9 +22,24 @@
         const canvas = document.getElementById('surveyCanvas');
         const ctx = canvas.getContext('2d');
         const usernameInput = document.getElementById('username');
-        const questionDisplay = document.getElementById('questionDisplay');
-        const questions = ["Automating literature searches and proposing search terms", "Screening abstracts and full texts for relevance", "Extracting structured data from studies", "Generating code for meta-analyses", "Conducting automated or \u201cliving\u201d literature reviews", "Managing evidence repositories and updates", "Monitoring clinical trial registries", "Monitoring academic sources for new evidence", "Horizon scanning for emerging technologies", "Detecting bias and assessing reproducibility in submitted reviews", "Performing sentiment/discourse analysis on grey literature and stakeholder feedback", "Handling copyright/IP-sensitive filtering and content validation"];
-        const colors = ["red", "blue", "green", "orange", "purple", "cyan", "magenta", "lime", "brown", "teal", "navy", "darkgoldenrod"];
+        const questionDisplay = document.getElementById('questionDisplay');        
+		const questions = [];
+
+		fetch('questions.json')
+			.then(response => response.json())
+			.then(data => {
+				data.forEach(item => {
+				questions.push(item);
+				});
+			// You can now use the `questions` array in your survey logic
+			console.log("Questions loaded:", questions);
+			})
+			.catch(error => {
+			console.error("Error loading questions:", error);
+			});
+
+		
+		const colors = ["red", "blue", "green", "orange", "purple", "cyan", "magenta", "lime", "brown", "teal", "navy", "darkgoldenrod"];
         let currentQuestionIndex = 0;
         let responses = [];
 
