@@ -21,13 +21,14 @@
 <input id="username" required="" type="text"/>
 <div id="questionDisplay">Click on the canvas to answer: </div>
 
-<button id="backButton">Back</button>
-<button id="nextButton">Next</button>
 
 <canvas height="600" id="surveyCanvas" width="1200"></canvas>
 <br/>
 <button onclick="completeSurvey()">Complete Survey</button>
-<script>
+<button id="backButton">Back</button>
+<button id="nextButton">Next</button>
+
+	<script>
         const canvas = document.getElementById('surveyCanvas');
         const ctx = canvas.getContext('2d');
         const usernameInput = document.getElementById('username');
