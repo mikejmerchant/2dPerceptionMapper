@@ -10,23 +10,50 @@
         #questionDisplay { font-weight: bold; margin-top: 10px; }
     </style>
 </head>
-<body><div id="questionText"></div><div id="questionExplanation"></div>
+<body>
+
+<div id="questionText"></div>
+<div id="questionExplanation"></div>
+<div id="questionDisplay"></div>
+
 <h2>2D Perceptual Mapping Survey</h2>
 <label for="username">Enter your name:</label>
 <input id="username" required="" type="text"/>
 <div id="questionDisplay">Click on the canvas to answer: </div>
-<canvas height="600" id="surveyCanvas" width="600"></canvas>
+
+<button id="backButton">Back</button>
+<button id="nextButton">Next</button>
+
+<canvas height="600" id="surveyCanvas" width="1200"></canvas>
 <br/>
 <button onclick="completeSurvey()">Complete Survey</button>
 <script>
         const canvas = document.getElementById('surveyCanvas');
         const ctx = canvas.getContext('2d');
         const usernameInput = document.getElementById('username');
-        const questionDisplay = document.getElementById('questionDisplay');        
+        const questionDisplay = document.getElementById('questionDisplay');  
 		
-		const colors = ["red", "blue", "green", "orange", "purple", "cyan", "magenta", "lime", "brown", "teal", "navy", "darkgoldenrod"];
+		const colors = ["red", "blue", "green", "orange", "purple", "cyPlease an", "magenta", "lime", "brown", "teal", "navy", "darkgoldenrod"];
         let currentQuestionIndex = 0;
         let responses = [];
+
+		document.getElementById('backButton').addEventListener('click', () => {
+			if (currentQuestionIndex > 0) {
+				currentQuestionIndex--;
+				updateQuestionDisplay();
+				drawCanvas();
+			}
+		});
+
+		document.getElementById('nextButton').addEventListener('click', () => {
+			if (currentQuestionIndex < questions.length - 1) {
+				currentQuestionIndex++;
+				updateQuestionDisplay();
+				drawCanvas();
+			}
+		});
+
+
 
         function drawCanvas() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -63,9 +90,15 @@
 
             // Draw previous responses
             responses.forEach((r, i) => {
-                ctx.beginPath();
-                ctx.arc(r.x, r.y, 6, 0, 2 * Math.PI);
-                ctx.fillStyle = colors[r.index];
+                ctx.beginPath();                
+				// Highlight current question's response
+				if (r.index === currentQuestionIndex) {
+					ctx.fillStyle = "black"; // or a standout color
+					ctx.lineWidth = 3;
+				} else {
+					ctx.fillStyle = colors[r.index];
+					ctx.lineWidth = 1;
+				}
                 ctx.fill();
                 ctx.stroke();
             });
@@ -100,6 +133,15 @@
             drawCanvas();
         });
 
+
+		function updateQuestionDisplay() {
+			questionDisplay.textContent = "Click on the canvas to answer: " + questions[currentQuestionIndex];
+			const questionText = document.getElementById("questionText");
+			const explanationText = document.getElementById("questionExplanation");
+			if (questionText) questionText.innerText = questions[currentQuestionIndex];
+			if (explanationText) explanationText.innerText = explanations[currentQuestionIndex];
+		}
+
         function completeSurvey() {
             if (responses.length < questions.length) {
                 alert("Please answer all questions before completing the survey.");
@@ -111,6 +153,9 @@
             });
             window.location.href = "mailto:your.email@example.com?subject=Survey Responses&body=" + body;
         }
+		
+		
+
 
         drawCanvas();
     </script>
@@ -136,6 +181,10 @@ fetch('questions.json')
   })
   .catch(error => {
     console.error("Error loading questions:", error);
+	questionDisplay.textContent = "⚠️ Failed to load questions. Please check your connection or try again later.";
+    questionText.innerText = "";
+    explanationText.innerText = "";
+
   });
 </script></body>
 </html>
