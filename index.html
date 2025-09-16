@@ -1,169 +1,201 @@
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 <html>
 <head>
-<title>2D Perceptual Mapping Survey</title>
-<style>
-        body { font-family: Arial, sans-serif; }
-        canvas { border: 1px solid #000; margin-top: 10px; }
-        #controls { margin-bottom: 10px; }
-        #questionDisplay { font-weight: bold; margin-top: 10px; }
-    </style>
+  <title>2D Perceptual Mapping Survey</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    canvas { border: 1px solid #000; margin-top: 10px; }
+    .survey-page { display: none; }
+    #page1 { display: block; }
+    #questionDisplay { font-weight: bold; margin-top: 10px; }
+    textarea { width: 100%; }
+  </style>
 </head>
 <body>
 
-<div id="questionText"></div>
-<div id="questionExplanation"></div>
-<div id="questionDisplay"></div>
+<!-- Page 1: Introduction -->
+<div id="page1" class="survey-page">
+  <h2>Welcome to the HTA lab: Future of HTA with AI survey</h2>
+  <p>This survey explores the transformative potential and risk of using AI in health technology assessment, over a 2-5 year horizon. You'll be asked to place concepts on a 2D map based on their impact and risk.</p>
+  <label for="username">Enter your name:</label>
+  <input id="username" type="text" required />
+  <br/><br/>
+  <button onclick="goToPage(2)">Continue</button>
+</div>
 
-<h2>2D Perceptual Mapping Survey</h2>
-<label for="username">Enter your name:</label>
-<input id="username" required="" type="text"/>
-<div id="questionDisplay">Click on the canvas to answer: </div>
+<!-- Page 2: Canvas Survey -->
+<div id="page2" class="survey-page">
+  <h2>2D Perceptual Mapping Survey</h2>
+  <div id="questionText"></div>
+  <div id="questionExplanation"></div>
+  <div id="questionDisplay">Click on the canvas to answer:</div>
+  <canvas id="surveyCanvas" width="1200" height="600"></canvas>
+  <br/>
+  <button id="backButton">Back</button>
+  <button id="nextButton">Next</button>
+  <br/>
+  <button onclick="goToPage(1)">Previous Page</button>
+  <button onclick="goToPage(3)">Continue</button>
+  
+</div>
 
+<!-- Page 3: Free-form Feedback -->
+<div id="page3" class="survey-page">
+  <h2>Additional Thoughts</h2>
+  <label for="feedback1">Can AI be used in HTA in a way that hasn't been described in this survey? Please describe that use, and if possible describe impact and risk</label><br/>
+  <textarea id="feedback1" rows="4"></textarea><br/><br/>
+  <label for="feedback2">Any concerns or suggestions?</label><br/>
+  <textarea id="feedback2" rows="4"></textarea><br/><br/>
+  <button onclick="goToPage(2)">Previous Page</button>
+  <button onclick="completeSurvey()">Submit Survey</button>
+</div>
 
-<canvas height="600" id="surveyCanvas" width="1200"></canvas>
-<br/>
-<button onclick="completeSurvey()">Complete Survey</button>
-<button id="backButton">Back</button>
-<button id="nextButton">Next</button>
-
-	<script>
-        const canvas = document.getElementById('surveyCanvas');
-        const ctx = canvas.getContext('2d');
-        const usernameInput = document.getElementById('username');
-        const questionDisplay = document.getElementById('questionDisplay');  
-		
-		const colors = ["red", "blue", "green", "orange", "purple", "cyPlease an", "magenta", "lime", "brown", "teal", "navy", "darkgoldenrod"];
-        let currentQuestionIndex = 0;
-        let responses = [];
-
-		document.getElementById('backButton').addEventListener('click', () => {
-			if (currentQuestionIndex > 0) {
-				currentQuestionIndex--;
-				updateQuestionDisplay();
-				drawCanvas();
-			}
-		});
-
-		document.getElementById('nextButton').addEventListener('click', () => {
-			if (currentQuestionIndex < questions.length - 1) {
-				currentQuestionIndex++;
-				updateQuestionDisplay();
-				drawCanvas();
-			}
-		});
-
-
-
-        function drawCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = "#000";
-            ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-            // Axes
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height / 2);
-            ctx.lineTo(canvas.width, canvas.height / 2);
-            ctx.moveTo(canvas.width / 2, 0);
-            ctx.lineTo(canvas.width / 2, canvas.height);
-            ctx.stroke();
-
-            // Labels
-            ctx.font = "14px Arial";
-            ctx.fillText("Low", 10, canvas.height / 2 - 10);
-            ctx.fillText("High", canvas.width - 40, canvas.height / 2 - 10);
-            ctx.fillText("Low", canvas.width / 2 + 10, canvas.height - 10);
-            ctx.fillText("High", canvas.width / 2 + 10, 20);
-            ctx.fillText("Feasibility in 2–5 years", canvas.width / 2 - 80, canvas.height - 30);
-            ctx.save();
-            ctx.translate(20, canvas.height / 2 + 80);
-            ctx.rotate(-Math.PI / 2);
-            ctx.fillText("Transformative potential", 0, 0);
-            ctx.restore();
-
-            // Quadrant labels
-            ctx.font = "12px Arial";
-            ctx.fillText("High need, Prototypes available now", canvas.width - 220, 20);
-            ctx.fillText("Low impact, low challenge", canvas.width - 180, canvas.height - 10);
-            ctx.fillText("Low impact, highly challenging", 10, canvas.height - 10);
-            ctx.fillText("High impact, Unfeasible with current technology", 10, 20);
-
-            // Draw previous responses
-            responses.forEach((r, i) => {
-                ctx.beginPath();                
-				// Highlight current question's response
-				if (r.index === currentQuestionIndex) {
-					ctx.fillStyle = "black"; // or a standout color
-					ctx.lineWidth = 3;
-				} else {
-					ctx.fillStyle = colors[r.index];
-					ctx.lineWidth = 1;
-				}
-                ctx.fill();
-                ctx.stroke();
-            });
-        }
-
-        canvas.addEventListener('click', function(event) {
-            if (!usernameInput.value) {
-                alert("Please enter your name before starting.");
-                return;
-            }
-            if (currentQuestionIndex >= questions.length) {
-                alert("All questions have been answered.");
-                return;
-            }
-            const rect = canvas.getBoundingClientRect();
-            const x = event.clientX - rect.left;
-            const y = event.clientY - rect.top;
-            responses.push({
-                username: usernameInput.value,
-                question: questions[currentQuestionIndex],
-                index: currentQuestionIndex,
-                x: x,
-                y: y,
-                timestamp: new Date().toISOString()
-            });
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                questionDisplay.textContent = "Click on the canvas to answer: " + questions[currentQuestionIndex];
-            } else {
-                questionDisplay.textContent = "All questions answered.";
-            }
-            drawCanvas();
-        });
-
-
-		function updateQuestionDisplay() {
-			questionDisplay.textContent = "Click on the canvas to answer: " + questions[currentQuestionIndex];
-			const questionText = document.getElementById("questionText");
-			const explanationText = document.getElementById("questionExplanation");
-			if (questionText) questionText.innerText = questions[currentQuestionIndex];
-			if (explanationText) explanationText.innerText = explanations[currentQuestionIndex];
-		}
-
-        function completeSurvey() {
-            if (responses.length < questions.length) {
-                alert("Please answer all questions before completing the survey.");
-                return;
-            }
-            let body = "Survey responses for " + usernameInput.value + ":%0D%0A%0D%0A";
-            responses.forEach(r => {
-                body += r.question + ": (" + r.x + ", " + r.y + ")%0D%0A";
-            });
-            window.location.href = "mailto:your.email@example.com?subject=Survey Responses&body=" + body;
-        }
-		
-		
-
-
-        drawCanvas();
-    </script>
 <script>
+const canvas = document.getElementById('surveyCanvas');
+const ctx = canvas.getContext('2d');
+const usernameInput = document.getElementById('username');
+const questionDisplay = document.getElementById('questionDisplay');
 const questions = [];
 const explanations = [];
+let currentQuestionIndex = 0;
+let responses = [];
+const colors = ["red", "blue", "green", "orange", "purple", "cyan", "magenta", "lime", "brown", "teal", "navy", "darkgoldenrod"];
 
+function goToPage(pageNumber) {
+  const pages = document.querySelectorAll('.survey-page');
+  pages.forEach((page, index) => {
+    page.style.display = (index === pageNumber - 1) ? 'block' : 'none';
+  });
+}
+
+document.getElementById('backButton').addEventListener('click', () => {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    updateQuestionDisplay();
+    drawCanvas();
+  }
+});
+
+document.getElementById('nextButton').addEventListener('click', () => {
+  if (currentQuestionIndex < questions.length - 1) {
+    currentQuestionIndex++;
+    updateQuestionDisplay();
+    drawCanvas();
+  }
+});
+
+function drawCanvas() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = "#000";
+  ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+  // Axes
+  ctx.beginPath();
+  ctx.moveTo(0, canvas.height / 2);
+  ctx.lineTo(canvas.width, canvas.height / 2);
+  ctx.moveTo(canvas.width / 2, 0);
+  ctx.lineTo(canvas.width / 2, canvas.height);
+  ctx.stroke();
+
+  // Labels
+  ctx.font = "14px Arial";
+  ctx.fillText("Low", 10, canvas.height / 2 - 10);
+  ctx.fillText("High", canvas.width - 40, canvas.height / 2 - 10);
+  ctx.fillText("Low", canvas.width / 2 + 10, canvas.height - 10);
+  ctx.fillText("High", canvas.width / 2 + 10, 20);
+
+  ctx.font = "bold 18px Arial";
+  ctx.fillText("Risk", canvas.width / 2 - 80, canvas.height - 10);
+  ctx.save();
+  ctx.translate(20, canvas.height / 2 - 50);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText("Impact", 0, 0);
+  ctx.restore();
+
+  // Quadrant labels
+  ctx.font = "12px Arial";
+  ctx.fillText("High impact, high risk", canvas.width - 130, 20);
+  ctx.fillText("Low impact, high risk", canvas.width - 130, canvas.height - 10);
+  ctx.fillText("Low impact, low risk", 10, canvas.height - 10);
+  ctx.fillText("High impact, low risk", 10, 20);
+
+  // Draw previous responses
+  responses.forEach((r, i) => {
+    ctx.beginPath();
+    ctx.arc(r.x, r.y, 6, 0, 2 * Math.PI);
+    if (r.index === currentQuestionIndex) {
+      ctx.fillStyle = "black";
+      ctx.lineWidth = 3;
+    } else {
+      ctx.fillStyle = colors[r.index];
+      ctx.lineWidth = 1;
+    }
+    ctx.fill();
+    ctx.stroke();
+  });
+}
+
+canvas.addEventListener('click', function(event) {
+  if (!usernameInput.value) {
+    alert("Please enter your name before starting.");
+    return;
+  }
+  if (currentQuestionIndex >= questions.length) {
+    alert("All questions have been answered.");
+    return;
+  }
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  responses.push({
+    username: usernameInput.value,
+    question: questions[currentQuestionIndex],
+    index: currentQuestionIndex,
+    x: x,
+    y: y,
+    timestamp: new Date().toISOString()
+  });
+  currentQuestionIndex++;
+  if (currentQuestionIndex < questions.length) {
+    updateQuestionDisplay();
+  } else {
+    questionDisplay.textContent = "All questions answered.";
+  }
+  drawCanvas();
+});
+
+function updateQuestionDisplay() {
+  questionDisplay.textContent = "Click on the canvas to answer: " + questions[currentQuestionIndex];
+  const questionText = document.getElementById("questionText");
+  const explanationText = document.getElementById("questionExplanation");
+  if (questionText) questionText.innerText = questions[currentQuestionIndex];
+  if (explanationText) explanationText.innerText = explanations[currentQuestionIndex];
+}
+
+function completeSurvey() {
+  if (responses.length < questions.length) {
+    alert("Please answer all questions before completing the survey.");
+    return;
+  }
+  const feedback1 = document.getElementById('feedback1').value.trim();
+  const feedback2 = document.getElementById('feedback2').value.trim();
+
+  let body = "Survey responses for " + usernameInput.value + ":%0D%0A%0D%0A";
+  responses.forEach(r => {
+    body += r.question + ": (" + r.x + ", " + r.y + ")%0D%0A";
+  });
+  body += "%0D%0AAdditional Thoughts:%0D%0A";
+  body += "What stood out to you?: " + feedback1 + "%0D%0A";
+  body += "Any concerns or suggestions?: " + feedback2 + "%0D%0A";
+
+  window.location.href = "mailto:your.email@example.com?subject=Survey Responses&body=" + body;
+}
+
+drawCanvas();
+</script>
+
+<script>
 fetch('questions.json')
   .then(response => response.json())
   .then(data => {
@@ -171,21 +203,17 @@ fetch('questions.json')
       questions.push(item.question);
       explanations.push(item.explanation);
     });
-
-    // Example: display the first question and explanation
     if (questions.length > 0) {
-      const questionText = document.getElementById("question");
-      const explanationText = document.getElementById("explanation");
-      if (questionText) questionText.innerText = questions[0];
-      if (explanationText) explanationText.innerText = explanations[0];
+      updateQuestionDisplay();
     }
   })
   .catch(error => {
     console.error("Error loading questions:", error);
-	questionDisplay.textContent = "⚠️ Failed to load questions. Please check your connection or try again later.";
-    questionText.innerText = "";
-    explanationText.innerText = "";
-
+    questionDisplay.textContent = "⚠️ Failed to load questions. Please check your connection or try again later.";
+    document.getElementById("questionText").innerText = "";
+    document.getElementById("questionExplanation").innerText = "";
   });
-</script></body>
+</script>
+
+</body>
 </html>
