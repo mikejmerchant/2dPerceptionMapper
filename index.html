@@ -18,36 +18,129 @@
 <div id="page1" class="survey-page">
   <h2>Welcome to the HTA lab: Future of HTA with AI survey</h2>
   <p>This survey explores the transformative potential and risk of using AI in health technology assessment, over a 2-5 year horizon. You'll be asked to place concepts on a 2D map based on their impact and risk.</p>
-  <label for="username">Enter your name:</label>
+  
+	<h2 style="color:#005A9C; border-bottom:2px solid #e0e0e0; padding-bottom:0.3em;">Definition of Impact</h2>
+	<p><strong>Impact</strong> refers to the potential benefits of implementing artificial intelligence (AI) in health technology assessment (HTA). This includes:</p>
+	<ul style="margin-top:0.5em; padding-left:1.2em;">
+	  <li><strong>Time savings</strong>: Reducing the duration required to complete tasks or processes.</li>
+	  <li><strong>Cost savings</strong>: Lowering financial expenditure through increased efficiency or automation.</li>
+	  <li><strong>Improved accuracy</strong>: Enhancing the precision, consistency, or reliability of outputs.</li>
+	  <li><strong>Transformative potential</strong>: Enabling new capabilities or approaches that were previously impractical.</li>
+	</ul>
+	<p style="font-style:italic; color:#666;">Stakeholders are invited to consider both incremental improvements and disruptive changes when assessing impact.</p>
+
+	<h2 style="color:#005A9C; border-bottom:2px solid #e0e0e0; padding-bottom:0.3em;">Definition of Risk</h2>
+	<p><strong>Risk</strong> refers to the potential dangers or downsides of implementing AI technologies in HTA. This includes:</p>
+	<ul style="margin-top:0.5em; padding-left:1.2em;">
+	  <li><strong>Technical risks</strong>: Errors, biases, or limitations in AI outputs that could compromise decision quality.</li>
+	  <li><strong>Operational risks</strong>: Challenges in integrating AI into existing workflows, including staff training and process disruption.</li>
+	  <li><strong>Ethical and governance risks</strong>: Issues related to transparency, accountability, data privacy, and fairness.</li>
+	  <li><strong>Strategic risks</strong>: Over-reliance on AI, misalignment with stakeholder values, or unintended consequences that could undermine trust.</li>
+	</ul>
+	<p style="font-style:italic; color:#666;">Stakeholders are encouraged to consider both short-term implementation risks and longer-term systemic risks.</p>
+
+	<h2 style="color:#005A9C; border-bottom:2px solid #e0e0e0; padding-bottom:0.3em;">Human Review of AI Technologies</h2>
+	<p>
+	All AI use cases presented in this survey are assumed to involve some form of human oversight. However, the nature of this oversight can vary. We define two key modes of human involvement:
+	</p>
+	<ul style="margin-top:0.5em; padding-left:1.2em;">
+	  <li><strong>Human-in-the-loop</strong>: AI supports decision-making, but a human reviews and approves outputs before they are used.</li>
+	  <li><strong>Human-at-the-helm</strong>: AI acts as a tool under direct human control, with humans actively guiding its use and interpreting its outputs, but the underlying functionality of the algorithm is trusted.</li>
+	</ul>
+	<p>
+	Use cases may fall anywhere along this spectrum. The <strong>impact</strong> and <strong>risk</strong> of a use case may depend on how it is deployed. For example, minimal human review might enable greater time savings but increase risk, while full human oversight may reduce risk but limit efficiency gains.
+	</p>
+	<p style="font-style:italic; color:#666;">
+	Please evaluate each use case based on your judgement of the most suitable mode of human involvement when deployed in practice.
+	</p>
+
+	<hr>
+  
+  <label for="username">Please enter your name to begin:</label>
   <input id="username" type="text" required />
   <br/><br/>
   <button onclick="goToPage(2)">Continue</button>
 </div>
 
+
+<div id="page2" class="survey-page active">
+  <h2>Evidence Identification and Appraisal</h2>
+ 
+  <p>
+    This section explores how artificial intelligence (AI) can support the identification, appraisal, and management of evidence in health technology assessment (HTA). AI tools are increasingly being used to automate and enhance tasks traditionally performed by researchers and analysts.
+  </p>
+
+  <p>
+    The questions in this section cover a range of AI applications. If this area is outside your expertise or confidence to assess, you may skip to Question 15.
+  </p>
+
+  <h3>Topics Covered:</h3>
+  <ul>
+    <li><strong>Literature search automation</strong> – AI-assisted identification of relevant studies from large databases.</li>
+    <li><strong>Abstract/full-text screening</strong> – Machine learning models to filter studies based on inclusion criteria.</li>
+    <li><strong>Structured data extraction</strong> – NLP tools to extract key data points from study texts.</li>
+    <li><strong>Meta-analysis code generation</strong> – Automated generation of statistical code for evidence synthesis.</li>
+    <li><strong>Living literature reviews</strong> – Continuously updated reviews using AI to monitor new publications.</li>
+    <li><strong>Evidence repository management</strong> – Intelligent systems to organize and retrieve stored evidence.</li>
+    <li><strong>Horizon scanning</strong> – AI tools to detect emerging technologies or trends in healthcare.</li>
+    <li><strong>Automated critical appraisal of study quality</strong> – Algorithms to assess methodological rigor.</li>
+    <li><strong>Bias/reproducibility detection</strong> – Tools to identify potential biases or reproducibility issues.</li>
+    <li><strong>Evidence gap mapping</strong> – AI-driven identification of areas lacking sufficient evidence.</li>
+    <li><strong>Sentiment/discourse analysis</strong> – Analysis of tone and framing in scientific literature.</li>
+    <li><strong>Copyright/IP filtering</strong> – Detection of intellectual property restrictions in publications.</li>
+    <li><strong>Translation of non-English studies</strong> – Machine translation to broaden evidence inclusion.</li>
+    <li><strong>Retraction/fraud detection</strong> – AI tools to flag retracted or potentially fraudulent studies.</li>
+  </ul>
+
+  <p>
+    These tools aim to improve the efficiency, consistency, and comprehensiveness of evidence handling in HTA. Your input will help us understand which areas are most promising and feasible for AI integration.
+  </p>
+  
+  
+  <p>Please rate your experience and confidence in evaluating this topic:</p>
+
+  <label>Experience (0 = None, 10 = Expert):</label><br/>
+  <input type="range" name="experience1" min="0" max="10" step="1" value="5" oninput="document.getElementById('expVal1').innerText = this.value">
+  <span id="expVal1">5</span>
+  <br/><br/>
+
+  <label>Describe your expertise (optional):</label><br/>
+  <textarea name="expertise1" rows="4" cols="80"></textarea>
+  <br/><br/>
+  <button onclick="goToPage(1)">Previous Page</button>
+  <button onclick="goToPage(3)">Continue</button>
+</div>
+
 <!-- Page 2: Canvas Survey -->
-<div id="page2" class="survey-page">
+<div id="page3" class="survey-page">
   <h2>2D Perceptual Mapping Survey</h2>
   <div id="questionText"></div>
   <div id="questionExplanation"></div>
   <div id="questionDisplay">Click on the canvas to answer:</div>
   <canvas id="surveyCanvas" width="1200" height="600"></canvas>
   <br/>
+  
+	<div>
+	  <button onclick="recordDontKnow(currentSet)">I don't know / Can't assess</button>
+	</div>
+
+  
   <button id="backButton">Back</button>
   <button id="nextButton">Next</button>
   <br/>
-  <button onclick="goToPage(1)">Previous Page</button>
-  <button onclick="goToPage(3)">Continue</button>
+  <button onclick="goToPage(2)">Previous Page</button>
+  <button onclick="goToPage(4)">Continue</button>
   
 </div>
 
 <!-- Page 3: Free-form Feedback -->
-<div id="page3" class="survey-page">
+<div id="page4" class="survey-page">
   <h2>Additional Thoughts</h2>
   <label for="feedback1">Can AI be used in HTA in a way that hasn't been described in this survey? Please describe that use, and if possible describe impact and risk</label><br/>
   <textarea id="feedback1" rows="4"></textarea><br/><br/>
   <label for="feedback2">Any concerns or suggestions?</label><br/>
   <textarea id="feedback2" rows="4"></textarea><br/><br/>
-  <button onclick="goToPage(2)">Previous Page</button>
+  <button onclick="goToPage(3)">Previous Page</button>
   <button onclick="completeSurvey()">Submit Survey</button>
 </div>
 
@@ -61,6 +154,18 @@ const explanations = [];
 let currentQuestionIndex = 0;
 let responses = [];
 const colors = ["red", "blue", "green", "orange", "purple", "cyan", "magenta", "lime", "brown", "teal", "navy", "darkgoldenrod"];
+
+
+
+function recordDontKnow(setNum) {
+  if (!surveyResponses.canvasClicks[`set${setNum}`]) {
+    surveyResponses.canvasClicks[`set${setNum}`] = [];
+  }
+  surveyResponses.canvasClicks[`set${setNum}`].push({ response: "Don't know" });
+
+  alert("Response recorded as 'Don't know'. You can continue to the next section.");
+}
+
 
 function goToPage(pageNumber) {
   const pages = document.querySelectorAll('.survey-page');
@@ -165,6 +270,14 @@ canvas.addEventListener('click', function(event) {
   drawCanvas();
 });
 
+
+function recordDontKnow() {
+  const questionKey = `Q${currentQuestionIndex + 1}`;
+  surveyResponses.theme1Mapping[questionKey] = { response: "Don't know" };
+  drawResponses();
+}
+
+
 function updateQuestionDisplay() {
   questionDisplay.textContent = "Click on the canvas to answer: " + questions[currentQuestionIndex];
   const questionText = document.getElementById("questionText");
@@ -180,11 +293,18 @@ function completeSurvey() {
   }
   const feedback1 = document.getElementById('feedback1').value.trim();
   const feedback2 = document.getElementById('feedback2').value.trim();
+  const experienceSlider = document.querySelector(`input[name="experience${setNum}"]`);
+  const expertiseText = document.querySelector(`textarea[name="expertise${setNum}"]`);
+  if (experienceSlider) surveyResponses.experience[`set${setNum}`] = experienceSlider.value;
 
   let body = "Survey responses for " + usernameInput.value + ":%0D%0A%0D%0A";
   responses.forEach(r => {
     body += r.question + ": (" + r.x + ", " + r.y + ")%0D%0A";
   });
+  
+  
+  body += "Experience 1: " + experienceSlider.value.trim(); + "%0D%0A";
+  body += "Expertise: " + expertiseText + "%0D%0A";
   body += "%0D%0AAdditional Thoughts:%0D%0A";
   body += "What stood out to you?: " + feedback1 + "%0D%0A";
   body += "Any concerns or suggestions?: " + feedback2 + "%0D%0A";
